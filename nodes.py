@@ -34,7 +34,12 @@ class SaveConditioning:
 class LoadContditioning():
     @classmethod
     def INPUT_TYPES(s):
-        files = [f for f in os.listdir(conditioning_dir) if os.path.isfile(os.path.join(conditioning_dir, f)) and f.endswith(".bin")]
+        files = []
+        for root, dirs, files in os.walk(conditioning_dir):
+            for file in files:
+                if file.endswith(".bin"):
+                    file_path = os.path.join(root, file)
+                    files.append(file_path)
         return {"required": {"conditioning": [sorted(files), ]}, }
 
     CATEGORY = "endman100"
