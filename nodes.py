@@ -41,7 +41,7 @@ class SaveConditioning:
 class LoadContditioning():
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": { "conditionings": (folder_paths.get_filename_list("conditionings"), )}}
+        return {"required": { "conditioning": (folder_paths.get_filename_list("conditionings"), )}}
 
     CATEGORY = "endman100"
     RETURN_TYPES = ("CONDITIONING", )
