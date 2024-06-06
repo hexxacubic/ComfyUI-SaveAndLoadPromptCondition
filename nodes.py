@@ -41,7 +41,6 @@ class SaveConditioning:
 class LoadContditioning():
     @classmethod
     def INPUT_TYPES(s):
-        print(folder_paths.get_filename_list("conditionings"))
         return {"required": { "conditionings": (folder_paths.get_filename_list("conditionings"), )}}
 
     CATEGORY = "endman100"
@@ -49,7 +48,7 @@ class LoadContditioning():
     FUNCTION = "load_conditioning"
 
     def load_conditioning(self, conditioning):
-        conditioning_path = folder_paths.get_full_path("ipadapter", conditioning)
+        conditioning_path = folder_paths.get_full_path("conditionings", conditioning)
         conditioning_list = torch.load(conditioning_path)
         conditioning_list[0] = conditioning_list[0].cpu()
         conditioning_list[1]["pooled_output"] = conditioning_list[1]["pooled_output"].cpu()
@@ -57,7 +56,7 @@ class LoadContditioning():
 
     @classmethod
     def IS_CHANGED(s, conditioning):
-        conditioning_path = folder_paths.get_full_path("ipadapter", conditioning)
+        conditioning_path = folder_paths.get_full_path("conditionings", conditioning)
         m = hashlib.sha256()
         with open(conditioning_path, 'rb') as f:
             m.update(f.read())
@@ -65,7 +64,7 @@ class LoadContditioning():
 
     @classmethod
     def VALIDATE_INPUTS(s, conditioning):
-        conditioning_path = folder_paths.get_full_path("ipadapter", conditioning)
+        conditioning_path = folder_paths.get_full_path("conditionings", conditioning)
         if not os.path.exists(conditioning_path):
             return "Invalid conditioning file: {}".format(conditioning_path)
         return True
