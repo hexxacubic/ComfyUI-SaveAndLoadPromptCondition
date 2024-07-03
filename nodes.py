@@ -33,7 +33,21 @@ class SaveConditioning:
         results = list()
         for (batch_number, conditioning) in enumerate(conditionings):
             save_path = os.path.join(self.output_dir, f"{batch_number:05}_conditionings.bin")
-            print(conditioning[0].shape, conditioning[1]["pooled_output"].shape, save_path)
+            print(conditioning)
+            print(f"conditioning[0].shape:{conditioning[0].shape}, save_path:{save_path}")
+            for key, value in conditioning[1].items():
+                if(type(value) == torch.Tensor):
+                    print(f"key:{key}, type:{type(value)}, shape:{value.shape}")
+                else:
+                    print(f"key:{key}, type:{type(conditioning[1][key])}")
+
+            if(hasattr(conditioning[0], "addit_embeds")):
+               for key, value in conditioning[0].addit_embeds.items():
+                    if(type(value) == torch.Tensor):
+                        print(f"key:{key}, type:{type(value)}, shape:{value.shape}")
+                    else:
+                        print(f"key:{key}, type:{type(value)}")
+
             torch.save(conditioning, save_path)
 
         return { "ui": { "conditionings": results } }
@@ -51,7 +65,13 @@ class LoadContditioning():
         conditioning_path = folder_paths.get_full_path("conditionings", conditioning)
         conditioning_list = torch.load(conditioning_path)
         conditioning_list[0] = conditioning_list[0].cpu()
-        conditioning_list[1]["pooled_output"] = conditioning_list[1]["pooled_output"].cpu()
+        for key, value in conditioning_list[1].items():
+            if(type(value) == torch.Tensor):
+                conditioning_list[1][key] = value.cpu()
+        if(hasattr(conditioning_list[0], "addit_embeds")):
+            for key, value in conditioning_list[0].addit_embeds.items():
+                if(type(value) == torch.Tensor):
+                    conditioning_list[0].addit_embeds[key] = value.cpu()
         return ([conditioning_list], )
 
     @classmethod
