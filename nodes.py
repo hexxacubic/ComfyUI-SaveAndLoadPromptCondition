@@ -31,7 +31,7 @@ class SaveConditioning:
     RETURN_TYPES = ()
     FUNCTION     = "save_conditioning"
     OUTPUT_NODE  = True
-    CATEGORY     = "endman100"
+    CATEGORY     = "hexxacubic"
 
     def save_conditioning(self, pos, neg, filename):
         # jeweils erstes Element holen
