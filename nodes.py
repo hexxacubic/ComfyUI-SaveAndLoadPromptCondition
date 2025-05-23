@@ -71,7 +71,7 @@ class LoadConditioning:
                     files.append(rel)
         return {"required": {"conditioning": (tuple(files),)}}
 
-    CATEGORY     = "endman100"
+    CATEGORY     = "hexxacubic"
     RETURN_TYPES = ("CONDITIONING", "CONDITIONING")
     FUNCTION     = "load_conditioning"
 
